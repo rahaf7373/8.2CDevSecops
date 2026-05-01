@@ -1,37 +1,41 @@
-pipeline {
-    agent any
+stage('Build') {
+    steps {
+        echo 'Building project...'
+    }
+}
 
-    stages {
+stage('Unit Tests') {
+    steps {
+        sh 'npm test'
+    }
+}
 
-        stage('Checkout') {
-            steps {
-                echo 'Checking out code...'
-            }
-        }
+stage('Code Analysis') {
+    steps {
+        echo 'Running SonarCloud...'
+    }
+}
 
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
+stage('Security Scan') {
+    steps {
+        sh 'snyk test'
+    }
+}
 
-        stage('Run Tests') {
-            steps {
-                sh 'npm test || true'
-            }
-        }
+stage('Deploy to Staging') {
+    steps {
+        echo 'Deploying to staging...'
+    }
+}
 
-        stage('Security Scan (Snyk)') {
-            steps {
-                sh 'echo Running Snyk scan...'
-                sh 'snyk test || true'
-            }
-        }
+stage('Integration Tests') {
+    steps {
+        echo 'Running integration tests...'
+    }
+}
 
-        stage('Code Quality (SonarCloud)') {
-            steps {
-                sh 'echo Running SonarCloud analysis...'
-            }
-        }
+stage('Deploy to Production') {
+    steps {
+        echo 'Deploy complete'
     }
 }
